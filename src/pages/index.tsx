@@ -1,7 +1,4 @@
-
 import { useEffect, useState } from "react"
-
-
 
 export default function Home() {
 
@@ -12,14 +9,23 @@ export default function Home() {
 
   const [users, setUsers] = useState<User[]>([]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   fetch('/api/users')
+  //     .then(response => response.json())
+  //     .then(data => setUsers(data.data));
+  // }, [])
+
+
+  function fetchUsers(setUsers: (arg0: any) => any) {
     fetch('/api/users')
       .then(response => response.json())
-      .then(data => {
-        setUsers(data.data);
-        console.log("users", users);
-      });
+      .then(data => setUsers(data.data));
+  }
+
+  useEffect(() => {
+    fetchUsers(setUsers);
   }, [])
+
 
   return (
     <>
@@ -29,6 +35,7 @@ export default function Home() {
           <p id={user.id.toString()}>{user.id} - {user.name}</p>
         ))
       }
+      <button onClick={() => fetchUsers(setUsers)}>Read Users</button>
     </>
   )
 }
